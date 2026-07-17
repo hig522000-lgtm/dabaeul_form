@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대바늘 만들기 대작전</title>
+  <style>
+    :root {
+      --bg: #f7f2ea;
+      --card: #ffffff;
+      --text: #2f241d;
+      --muted: #6f5b45;
+      --accent: #7a4c2a;
+      --border: #e7d8c3;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    .hero img {
+      width: 100%;
+      border-radius: 14px;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .card p, .card li {
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .option {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fcfaf7;
+    }
+
+    .option strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .small {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .note {
+      background: #fff8ec;
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .step-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button.secondary {
+      background: #8d6a47;
+    }
+
+    .choice-btn {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fcfaf7;
+      color: #2f241d;
+      cursor: pointer;
+      text-align: left;
+      font-size: 15px;
+      width: 100%;
+    }
+
+    .choice-btn strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #2f241d;
+    }
+
+    .choice-btn .choice-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .choice-btn .choice-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f5efe7;
+    }
+
+    .choice-btn .small {
+      display: block;
+      color: #5f4b35;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .choice-btn:hover,
+    .choice-btn.active {
+      border-color: var(--accent);
+      background: #fff3e6;
+    }
+
+    .set-group {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fcfaf7;
+      margin-bottom: 12px;
+    }
+
+    .set-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .set-preview {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .set-options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .set-option {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+      text-align: left;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .set-option span {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .set-option.active {
+      border-color: var(--accent);
+      background: #fff3e6;
+    }
+
+    .result-card {
+      display: none;
+      margin-top: 16px;
+    }
+
+    .result-card.active {
+      display: block;
+    }
+
+    .result-summary {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .result-row {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #fcfaf7;
+    }
+
+    .result-row strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    .result-row p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .history-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #fffdf9;
+    }
+
+    .history-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    .history-item p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .download-btn {
+      margin-top: 10px;
+    }
+
+    .reset-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff8ec;
+      margin-top: 12px;
+    }
+
+    .reset-box strong {
+      display: block;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .reset-box input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .reset-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .reset-actions button {
+      flex: 1;
+    }
+
+    .reset-message {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 14px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <form id="orderForm" class="wrap">
+    <section class="hero">
+      <img src="표지이미지/IMG_3351.JPG" alt="대바늘 만들기 대작전 표지" />
+      <h1>대바늘 만들기 대작전</h1>
+      <p class="subtitle">대바늘 재료를 함께 공구하기 위해, 원하는 재료와 수량을 조사하는 설문입니다.</p>
+    </section>
+
+    <section class="card step active" data-step="1">
+      <h2>1. 기본 정보</h2>
+      <label for="name">이름을 적어주세요.</label>
+      <input id="name" name="name" type="text" placeholder="예: 김민수" />
+      <div class="step-actions">
+        <div></div>
+        <button type="button" class="next-btn">다음</button>
+      </div>
+    </section>
+
+    <section class="card step" data-step="2">
+      <h2>2. 세트 수량</h2>
+      <p>대바늘 본체가 되는 목재는 한 세트 기준으로 다음과 같습니다.</p>
+      <p>3.0-3.5-4.0-4.5-5.0-5.5-6.0 굵기로 각 한 쌍씩, 7쌍, 총 14개 구성입니다.</p>
+      <label for="setQty">총 몇 세트로 주문하실 건가요?</label>
+      <input id="setQty" name="setQty" type="number" min="1" step="1" placeholder="예: 2" />
+      <div class="step-actions">
+        <button type="button" class="secondary prev-btn">이전</button>
+        <button type="button" class="next-btn">다음</button>
+      </div>
+    </section>
+
+    <section class="card step" data-step="3">
+      <h2>3. 나무 길이 선택</h2>
+      <div class="note">
+        <strong>안내</strong><br />
+        기본: 11cm 길이, 연결부(2cm)를 접합하면 13cm 바늘이 됩니다.<br />
+        숏팁: 기본 바늘에서 원하는 길이만큼 재단되어옵니다. 목재 종류 및 가격은 동일합니다.<br />
+        소매 바늘: 8cm+6cm 조합, 연결부(2cm)를 접합하면 10cm+8cm 바늘이 됩니다.
+      </div>
+      <div class="note">
+        <strong>가격 안내</strong><br />
+        기본: 흑단 14,000원 / 자단 16,000원 / 녹단 16,000원 / 혈단 18,000원 / 스네이크 우드 30,500원 / 핑크 아이보리 61,000원<br />
+        소매 바늘: 흑단 12,000원 / 자단 12,000원 / 녹단 12,000원 / 혈단 13,000원 / 스네이크 우드 22,000원 / 핑크 아이보리 44,000원
+      </div>
+      <p>세트 수량만큼 각 세트의 나무 길이를 선택해주세요.</p>
+      <div id="lengthSets"></div>
+      <div class="step-actions">
+        <button type="button" class="secondary prev-btn">이전</button>
+        <button type="button" class="next-btn">다음</button>
+      </div>
+    </section>
+
+    <section class="card step" data-step="4">
+      <h2>3-1. 나무 종류 선택</h2>
+      <p>각 세트별로 나무 종류를 선택해주세요.</p>
+      <div id="woodSets"></div>
+      <div class="step-actions">
+        <button type="button" class="secondary prev-btn">이전</button>
+        <button type="button" class="next-btn">다음</button>
+      </div>
+    </section>
+
+    <section class="card step" data-step="5">
+      <h2>4. 연결부 선택</h2>
+      <div class="note">
+        <strong>안내</strong><br />
+        연결부 수량은 선택한 나무 세트 수량과 같아야 합니다.<br />
+        예: 세트가 3개면 연결부도 3개를 입력해주세요.
+      </div>
+      <p>바늘과 케이블을 연결할 스테인리스 연결부: 19,000원</p>
+      <p>스테인리스 소재입니다. 연결부에 3.0~6.0의 바늘 굵기가 0.5단위로 레이저 각인이 되어 있습니다.</p>
+      <label for="connectorQty">연결부 개수를 입력해주세요.</label>
+      <input id="connectorQty" name="connectorQty" type="number" min="0" step="1" placeholder="예: 1" />
+      <div class="step-actions">
+        <button type="button" class="secondary prev-btn">이전</button>
+        <button type="button" class="next-btn">다음</button>
+      </div>
+    </section>
+
+    <section class="card step" data-step="6">
+      <h2>5. 케이블 선택</h2>
+      <p>케이블 기본 3개: 18,000원</p>
+      <p>추가 케이블: 6,000원</p>
+      <p>스위블 제품이며, 치아오구 케이블처럼 금속와이어에 코팅이 된 형식입니다.</p>
+      <p>기본으로 35cm, 55cm, 75cm 3개 길이의 케이블이 제공됩니다.</p>
+      <p>추가로 13cm, 17cm, 20cm, 22cm, 28cm, 35cm, 55cm, 75cm, 95cm 길이도 구매 가능합니다.</p>
+      <div class="grid">
+        <div class="option">
+          <strong>기본 3개 세트</strong>
+          <label for="cableBaseQty">개수 입력</label>
+          <input id="cableBaseQty" name="cableBaseQty" type="number" min="0" step="1" placeholder="예: 1" />
+        </div>
+        <div class="option">
+          <strong>추가 케이블</strong>
+          <label for="cableExtraQty">추가 구매 수량</label>
+          <input id="cableExtraQty" name="cableExtraQty" type="number" min="0" step="1" placeholder="예: 2" />
+        </div>
+      </div>
+      <label for="cableLength">케이블 길이를 적어주세요.</label>
+      <input id="cableLength" name="cableLength" type="text" placeholder="예: 35cm, 55cm" />
+      <div class="step-actions">
+        <button type="button" class="secondary prev-btn">이전</button>
+        <button type="button" class="next-btn">다음</button>
+      </div>
+    </section>
+
+    <section class="card step" data-step="7">
+      <h2>6. 기타 의견</h2>
+      <p>추가로 원하는 사항이 있으면 적어주세요.</p>
+      <textarea name="memo" placeholder="예: 원하는 길이, 색상, 추가 요청 사항"></textarea>
+      <div class="step-actions">
+        <button type="button" class="secondary prev-btn">이전</button>
+        <button type="submit">제출</button>
+      </div>
+    </section>
+
+    <section class="card result-card" id="resultCard">
+      <h2>제출 결과</h2>
+      <p id="resultMessage">아직 제출된 내용이 없습니다.</p>
+      <div id="resultSummary" class="result-summary"></div>
+      <button type="button" class="download-btn" id="downloadBtn">엑셀로 다운로드</button>
+      <div class="reset-box">
+        <strong>결과 초기화</strong>
+        <p>관리자 비밀번호를 입력하면 제출 내역을 모두 지울 수 있습니다.</p>
+        <div class="reset-actions">
+          <input id="adminPassword" type="password" placeholder="비밀번호 입력" />
+          <button type="button" id="resetBtn">초기화</button>
+        </div>
+        <p id="resetMessage" class="reset-message"></p>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+  </form>
+
+  <script>
+    const form = document.getElementById('orderForm');
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const setQtyInput = document.getElementById('setQty');
+    const lengthSetsContainer = document.getElementById('lengthSets');
+    const woodSetsContainer = document.getElementById('woodSets');
+    const resultCard = document.getElementById('resultCard');
+    const resultMessage = document.getElementById('resultMessage');
+    const resultSummary = document.getElementById('resultSummary');
+    const historyList = document.getElementById('historyList');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const adminPasswordInput = document.getElementById('adminPassword');
+    const resetBtn = document.getElementById('resetBtn');
+    const resetMessage = document.getElementById('resetMessage');
+    const ADMIN_PASSWORD = 'coca';
+    let currentStep = 0;
+    let selectedLengths = [];
+    let selectedWoodTypes = [];
+
+    const lengthOptions = [
+      { value: 'basic', label: '기본 바늘 세트', note: '11cm 길이, 연결부 2cm 접합 시 13cm' },
+      { value: 'shorttip', label: '숏팁 바늘 세트', note: '원하는 길이만큼 재단' },
+      { value: 'retail', label: '소매 바늘 세트', note: '8cm+6cm 조합, 접합 시 10cm+8cm' }
+    ];
+
+    const woodOptions = [
+      { value: '흑단', label: '흑단', note: '매끈하고 가공이 쉽다.' },
+      { value: '자단', label: '자단', note: '붉은 바탕에 노란색 유성무늬가 있고 가공·무름 정도는 보통이다.' },
+      { value: '녹단', label: '녹단', note: '무르고 가공이 쉽지만 부러지기 쉽고, 자연향과 색 변화가 특징이다.' },
+      { value: '혈단', label: '혈단', note: '붉은 색이 매력적이고 가공·무름 정도는 보통이다.' },
+      { value: '스네이크 우드', label: '스네이크 우드', note: '단단하고 가공이 어렵지만 무늬가 아름답고 광이 잘 난다.' },
+      { value: '핑크 아이보리', label: '핑크 아이보리', note: '입자가 고아 매끈하고 밀도가 높다.' }
+    ];
+
+    function formatPrice(value) {
+      return `${Number(value || 0).toLocaleString('ko-KR')}원`;
+    }
+
+    function getSetPrice(lengthValue, woodValue) {
+      const basicPrices = {
+        흑단: 14000,
+        자단: 16000,
+        녹단: 16000,
+        혈단: 18000,
+        '스네이크 우드': 30500,
+        '핑크 아이보리': 61000
+      };
+      const retailPrices = {
+        흑단: 12000,
+        자단: 12000,
+        녹단: 12000,
+        혈단: 13000,
+        '스네이크 우드': 22000,
+        '핑크 아이보리': 44000
+      };
+
+      const priceMap = lengthValue === 'retail' ? retailPrices : basicPrices;
+      return priceMap[woodValue] || 0;
+    }
+
+    function buildPriceSummary(data) {
+      const setPriceLines = (data.sets || []).map((set, index) => {
+        const unitPrice = typeof set.unitPrice === 'number' ? set.unitPrice : getSetPrice(set.lengthValue, set.woodValue);
+        const setPrice = (typeof set.setPrice === 'number' ? set.setPrice : unitPrice);
+        return `세트 ${index + 1}: ${formatPrice(setPrice)} (${set.lengthLabel || '미선택'} / ${set.woodLabel || '미선택'})`;
+      });
+
+      const connectorQty = Number(data.connectorQty || 0);
+      const cableBaseQty = Number(data.cableBaseQty || 0);
+      const cableExtraQty = Number(data.cableExtraQty || 0);
+      const connectorPrice = connectorQty * 19000;
+      const cableBasePrice = cableBaseQty * 18000;
+      const cableExtraPrice = cableExtraQty * 6000;
+      const totalPrice = (data.sets || []).reduce((sum, set) => sum + (typeof set.setPrice === 'number' ? set.setPrice : getSetPrice(set.lengthValue, set.woodValue)), 0) + connectorPrice + cableBasePrice + cableExtraPrice;
+
+      return {
+        setPriceLines,
+        connectorPrice,
+        cableBasePrice,
+        cableExtraPrice,
+        totalPrice
+      };
+    }
+
+    function showStep(index) {
+      steps.forEach((step, stepIndex) => {
+        step.classList.toggle('active', stepIndex === index);
+      });
+      currentStep = index;
+    }
+
+    function normalizeSelections(values, size) {
+      return Array.from({ length: size }, (_, index) => values[index] || '');
+    }
+
+    function renderSetSelectors() {
+      const qty = Math.max(1, parseInt(setQtyInput.value, 10) || 1);
+      selectedLengths = normalizeSelections(selectedLengths, qty);
+      selectedWoodTypes = normalizeSelections(selectedWoodTypes, qty);
+
+      lengthSetsContainer.innerHTML = '';
+      woodSetsContainer.innerHTML = '';
+
+      for (let index = 0; index < qty; index += 1) {
+        const setNumber = index + 1;
+
+        const lengthGroup = document.createElement('div');
+        lengthGroup.className = 'set-group';
+        lengthGroup.innerHTML = `
+          <div class="set-title">세트 ${setNumber}</div>
+          <div class="set-options">
+            ${lengthOptions.map((option) => `
+              <button type="button" class="set-option ${selectedLengths[index] === option.value ? 'active' : ''}" data-group="length" data-index="${index}" data-value="${option.value}">
+                ${option.label}<span>${option.note}</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        lengthSetsContainer.appendChild(lengthGroup);
+
+        const woodGroup = document.createElement('div');
+        woodGroup.className = 'set-group';
+        woodGroup.innerHTML = `
+          <div class="set-title">세트 ${setNumber}</div>
+          <div class="set-preview">길이: ${lengthOptions.find((option) => option.value === selectedLengths[index])?.label || '선택 전'}</div>
+          <div class="set-options">
+            ${woodOptions.map((option) => `
+              <button type="button" class="set-option ${selectedWoodTypes[index] === option.value ? 'active' : ''}" data-group="wood" data-index="${index}" data-value="${option.value}">
+                ${option.label}<span>${option.note}</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        woodSetsContainer.appendChild(woodGroup);
+      }
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    }
+
+    function renderResult(data) {
+      const setLines = data.sets.map((set, index) => `세트 ${index + 1}: ${set.lengthLabel} / ${set.woodLabel}`).join('<br />');
+      const priceSummary = buildPriceSummary(data);
+      resultMessage.textContent = `${data.name || '이름 미입력'}님이 제출하신 내용입니다.`;
+      resultSummary.innerHTML = `
+        <div class="result-row">
+          <strong>기본 정보</strong>
+          <p>이름: ${data.name || '미입력'}<br />세트 수량: ${data.setQty}세트</p>
+        </div>
+        <div class="result-row">
+          <strong>세트별 선택</strong>
+          <p>${setLines}</p>
+        </div>
+        <div class="result-row">
+          <strong>가격 정보</strong>
+          <p>${priceSummary.setPriceLines.join('<br />')}<br />연결부: ${formatPrice(priceSummary.connectorPrice)} (${data.connectorQty || 0}개)<br />케이블: 기본 ${formatPrice(priceSummary.cableBasePrice)} (${data.cableBaseQty || 0}개), 추가 ${formatPrice(priceSummary.cableExtraPrice)} (${data.cableExtraQty || 0}개)<br /><strong>총 예상 금액: ${formatPrice(priceSummary.totalPrice)}</strong></p>
+        </div>
+        <div class="result-row">
+          <strong>연결부 / 케이블</strong>
+          <p>연결부: ${data.connectorQty}개<br />케이블 기본: ${data.cableBaseQty}개 / 추가: ${data.cableExtraQty}개<br />길이: ${data.cableLength || '미입력'}</p>
+        </div>
+        <div class="result-row">
+          <strong>기타 의견</strong>
+          <p>${data.memo || '없음'}</p>
+        </div>
+      `;
+      resultCard.classList.add('active');
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderHistory(results) {
+      if (!results.length) {
+        historyList.innerHTML = '<p>아직 제출된 내역이 없습니다.</p>';
+        return;
+      }
+
+      historyList.innerHTML = results.map((item, index) => {
+        const priceSummary = buildPriceSummary(item);
+        return `
+          <div class="history-item">
+            <strong>${index + 1}. ${item.name || '이름 미입력'} · ${formatDate(item.submittedAt)}</strong>
+            <p>세트 수량: ${item.setQty}세트<br />${item.sets.map((set, setIndex) => `세트 ${setIndex + 1}: ${set.lengthLabel} / ${set.woodLabel}`).join('<br />')}<br />가격: ${priceSummary.setPriceLines.join('<br />')}<br />연결부: ${item.connectorQty}개 / 케이블: ${item.cableBaseQty}개 기본, ${item.cableExtraQty}개 추가 / 길이: ${item.cableLength || '미입력'}<br /><strong>총 예상 금액: ${formatPrice(priceSummary.totalPrice)}</strong></p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function saveResult(data) {
+      const savedResults = JSON.parse(localStorage.getItem('dabaeul-order-results') || '[]');
+      savedResults.push(data);
+      localStorage.setItem('dabaeul-order-results', JSON.stringify(savedResults));
+      return savedResults;
+    }
+
+    function loadSavedResult() {
+      const savedResults = JSON.parse(localStorage.getItem('dabaeul-order-results') || '[]');
+      if (!savedResults.length) return [];
+
+      const latest = savedResults[savedResults.length - 1];
+      renderResult(latest);
+      renderHistory(savedResults);
+      return savedResults;
+    }
+
+    function resetResults() {
+      if (adminPasswordInput.value !== ADMIN_PASSWORD) {
+        resetMessage.textContent = '비밀번호가 올바르지 않습니다.';
+        return;
+      }
+
+      localStorage.removeItem('dabaeul-order-results');
+      adminPasswordInput.value = '';
+      resetMessage.textContent = '제출 내역이 초기화되었습니다.';
+      resultMessage.textContent = '아직 제출된 내용이 없습니다.';
+      resultSummary.innerHTML = '';
+      historyList.innerHTML = '<p>아직 제출된 내역이 없습니다.</p>';
+      resultCard.classList.add('active');
+    }
+
+    function downloadExcel() {
+      const results = JSON.parse(localStorage.getItem('dabaeul-order-results') || '[]');
+      if (!results.length) {
+        alert('다운로드할 제출 내역이 없습니다.');
+        return;
+      }
+
+      const header = ['이름', '제출시간', '세트 수량', '세트별 길이/나무', '세트별 가격', '연결부 수량', '연결부 가격', '케이블 기본', '케이블 추가', '케이블 가격', '케이블 길이', '총 예상 금액', '기타 의견'];
+      const rows = results.map((item) => {
+        const setDetails = item.sets.map((set, index) => `세트${index + 1}:${set.lengthLabel}/${set.woodLabel}`).join(' | ');
+        const priceDetails = item.sets.map((set, index) => `세트${index + 1}:${formatPrice(typeof set.setPrice === 'number' ? set.setPrice : getSetPrice(set.lengthValue, set.woodValue))}`).join(' | ');
+        const connectorPrice = Number(item.connectorQty || 0) * 19000;
+        const cablePrice = Number(item.cableBaseQty || 0) * 18000 + Number(item.cableExtraQty || 0) * 6000;
+        const totalPrice = (item.sets || []).reduce((sum, set) => sum + (typeof set.setPrice === 'number' ? set.setPrice : getSetPrice(set.lengthValue, set.woodValue)), 0) + connectorPrice + cablePrice;
+        return [
+          item.name || '미입력',
+          formatDate(item.submittedAt),
+          item.setQty,
+          setDetails,
+          priceDetails,
+          item.connectorQty,
+          connectorPrice,
+          item.cableBaseQty,
+          item.cableExtraQty,
+          cablePrice,
+          item.cableLength || '미입력',
+          totalPrice,
+          item.memo || ''
+        ];
+      });
+
+      const csv = [header, ...rows]
+        .map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = '대바늘_제출결과.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const setQty = Math.max(1, parseInt(setQtyInput.value, 10) || 1);
+      const sets = Array.from({ length: setQty }, (_, index) => {
+        const lengthValue = selectedLengths[index];
+        const woodValue = selectedWoodTypes[index] || '미선택';
+        const lengthLabel = lengthOptions.find((option) => option.value === lengthValue)?.label || '미선택';
+        const woodLabel = woodOptions.find((option) => option.value === woodValue)?.label || woodValue;
+        const unitPrice = getSetPrice(lengthValue, woodValue);
+        return {
+          lengthValue,
+          lengthLabel,
+          woodValue,
+          woodLabel,
+          unitPrice,
+          setPrice: unitPrice
+        };
+      });
+
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        setQty,
+        sets,
+        connectorQty: document.getElementById('connectorQty').value || '0',
+        cableBaseQty: document.getElementById('cableBaseQty').value || '0',
+        cableExtraQty: document.getElementById('cableExtraQty').value || '0',
+        cableLength: document.getElementById('cableLength').value.trim(),
+        memo: document.querySelector('textarea[name="memo"]').value.trim(),
+        submittedAt: new Date().toISOString()
+      };
+
+      const results = saveResult(data);
+      renderResult(data);
+      renderHistory(results);
+    });
+
+    document.querySelectorAll('.next-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (currentStep < steps.length - 1) {
+          showStep(currentStep + 1);
+        }
+      });
+    });
+
+    document.querySelectorAll('.prev-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (currentStep > 0) {
+          showStep(currentStep - 1);
+        }
+      });
+    });
+
+    lengthSetsContainer.addEventListener('click', (event) => {
+      const btn = event.target.closest('.set-option[data-group="length"]');
+      if (!btn) return;
+
+      const index = Number(btn.dataset.index);
+      selectedLengths[index] = btn.dataset.value;
+      const options = btn.closest('.set-options').querySelectorAll('.set-option');
+      options.forEach((option) => {
+        option.classList.toggle('active', option === btn);
+      });
+
+      const preview = woodSetsContainer.querySelectorAll('.set-group')[index]?.querySelector('.set-preview');
+      if (preview) {
+        const selectedLengthLabel = lengthOptions.find((option) => option.value === btn.dataset.value)?.label || '선택 전';
+        preview.textContent = `길이: ${selectedLengthLabel}`;
+      }
+    });
+
+    woodSetsContainer.addEventListener('click', (event) => {
+      const btn = event.target.closest('.set-option[data-group="wood"]');
+      if (!btn) return;
+
+      const index = Number(btn.dataset.index);
+      selectedWoodTypes[index] = btn.dataset.value;
+      const options = btn.closest('.set-options').querySelectorAll('.set-option');
+      options.forEach((option) => {
+        option.classList.toggle('active', option === btn);
+      });
+
+      const preview = btn.closest('.set-group').querySelector('.set-preview');
+      if (preview) {
+        const selectedLengthLabel = lengthOptions.find((option) => option.value === selectedLengths[index])?.label || '선택 전';
+        preview.textContent = `길이: ${selectedLengthLabel} / 나무: ${btn.dataset.value}`;
+      }
+    });
+
+    resetBtn.addEventListener('click', resetResults);
+    downloadBtn.addEventListener('click', downloadExcel);
+
+    setQtyInput.addEventListener('input', renderSetSelectors);
+    setQtyInput.addEventListener('change', renderSetSelectors);
+    renderSetSelectors();
+    loadSavedResult();
+    showStep(0);
+  </script>
+</body>
+</html>
