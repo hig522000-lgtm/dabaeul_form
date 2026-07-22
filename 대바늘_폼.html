@@ -2,7 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="theme-color" content="#7a4c2a" />
   <title>대바늘 만들기 대작전</title>
   <style>
     :root {
@@ -15,65 +17,122 @@
     }
 
     * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
       font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding: 24px;
+      padding: 6px;
+      line-height: 1.4;
+      overflow-x: hidden;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     .wrap {
-      max-width: 900px;
+      max-width: 920px;
+      width: 100%;
       margin: 0 auto;
     }
 
     .hero {
-      background: var(--card);
+      background: #fffdfb;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: none;
+      margin-bottom: 8px;
+      border-top: 3px solid var(--accent);
     }
 
     .hero img {
       width: 100%;
-      border-radius: 14px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
       display: block;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
+      margin: 0 0 6px;
+      font-size: clamp(22px, 5.2vw, 30px);
       color: var(--accent);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      font-weight: 800;
     }
 
     .subtitle {
       margin: 0;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.55;
+      font-size: 14px;
     }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px 22px;
-      margin-bottom: 16px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 8px;
+      box-shadow: none;
+      overflow: hidden;
     }
 
     .card h2 {
-      margin: 0 0 10px;
-      font-size: 20px;
+      margin: 0 0 8px;
+      font-size: 17px;
       color: var(--accent);
+      font-weight: 800;
     }
 
     .card p, .card li {
-      line-height: 1.7;
+      line-height: 1.65;
       color: var(--text);
+      font-size: 15px;
+      margin: 6px 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    input, textarea, button {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      margin-top: 6px;
+      min-height: 46px;
+      appearance: none;
+      -webkit-appearance: none;
+      touch-action: manipulation;
+    }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid rgba(122, 76, 42, 0.24);
+      border-color: var(--accent);
     }
 
     .grid {
@@ -102,10 +161,11 @@
 
     .note {
       background: #fff8ec;
-      border-left: 4px solid var(--accent);
-      padding: 12px 14px;
-      border-radius: 10px;
-      margin-top: 10px;
+      border-left: 3px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      font-size: 14px;
     }
 
     .step {
@@ -114,27 +174,52 @@
 
     .step.active {
       display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .step-actions {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-      margin-top: 16px;
+      gap: 8px;
+      margin-top: 10px;
+      position: sticky;
+      bottom: 2px;
+      padding-top: 6px;
+      background: transparent;
+      border-top: none;
     }
 
     button {
       border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      background: var(--accent);
+      border-radius: 12px;
+      padding: 11px 13px;
+      background: linear-gradient(135deg, var(--accent) 0%, #93542f 100%);
       color: white;
       cursor: pointer;
       font-size: 15px;
+      font-weight: 800;
+      min-height: 44px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 5px 12px rgba(122, 76, 42, 0.2);
     }
 
     button.secondary {
       background: #8d6a47;
+    }
+
+    .step-actions button {
+      flex: 1;
+      max-width: 140px;
+    }
+
+    .step-actions button:first-child {
+      max-width: 110px;
     }
 
     .choice-btn {
@@ -163,7 +248,7 @@
 
     .choice-btn .choice-img {
       width: 100%;
-      height: 120px;
+      height: 96px;
       object-fit: cover;
       border-radius: 8px;
       border: 1px solid var(--border);
@@ -185,16 +270,18 @@
 
     .set-group {
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 8px;
       background: #fcfaf7;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      border-left: 2px solid var(--accent);
     }
 
     .set-title {
       font-weight: 700;
       margin-bottom: 8px;
       color: var(--accent);
+      font-size: 15px;
     }
 
     .set-preview {
@@ -210,13 +297,14 @@
 
     .set-option {
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: white;
       color: var(--text);
       text-align: left;
-      padding: 10px 12px;
+      padding: 11px 12px;
       cursor: pointer;
-    }
+      font-size: 15px;
+      line-height: 1.45;      box-shadow: 0 1px 3px rgba(0,0,0,0.04);    }
 
     .set-option span {
       display: block;
@@ -224,6 +312,25 @@
       font-size: 13px;
       color: var(--muted);
       line-height: 1.4;
+    }
+
+    .set-option img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f5efe7;
+      margin-bottom: 6px;
+    }
+
+    .set-option-title {
+      margin-top: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
     }
 
     .set-option.active {
@@ -248,9 +355,9 @@
 
     .result-row {
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      background: #fcfaf7;
+      border-radius: 12px;
+      padding: 12px;
+      background: linear-gradient(180deg, #fcfaf7 0%, #f8f1e7 100%);
     }
 
     .result-row strong {
@@ -263,6 +370,7 @@
       margin: 0;
       color: var(--text);
       line-height: 1.6;
+      font-size: 14px;
     }
 
     .history-list {
@@ -273,9 +381,31 @@
 
     .history-item {
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 12px;
       background: #fffdf9;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .history-item-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .result-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .edit-btn {
+      padding: 8px 10px;
+      min-height: 36px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #8d6a47;
+      box-shadow: none;
     }
 
     .history-item strong {
@@ -293,6 +423,7 @@
 
     .download-btn {
       margin-top: 10px;
+      width: 100%;
     }
 
     .reset-box {
@@ -321,10 +452,17 @@
       display: flex;
       gap: 8px;
       margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .reset-actions input {
+      flex: 1 1 180px;
+      min-width: 0;
     }
 
     .reset-actions button {
-      flex: 1;
+      flex: 0 0 auto;
+      width: auto;
     }
 
     .reset-message {
@@ -334,8 +472,14 @@
     }
 
     @media (max-width: 700px) {
-      body { padding: 14px; }
+      body { padding: 6px; }
+      .hero, .card { padding: 10px; }
       .grid { grid-template-columns: 1fr; }
+      .step-actions { gap: 8px; padding-bottom: 2px; }
+      .step-actions button { max-width: none; }
+      .choice-btn .choice-img { height: 80px; }
+      .set-option { padding: 8px 9px; }
+      input, textarea, button { font-size: 16px; }
     }
   </style>
 </head>
@@ -379,8 +523,8 @@
       </div>
       <div class="note">
         <strong>가격 안내</strong><br />
-        기본: 흑단 14,000원 / 자단 16,000원 / 녹단 16,000원 / 혈단 18,000원 / 스네이크 우드 30,500원 / 핑크 아이보리 61,000원<br />
-        소매 바늘: 흑단 12,000원 / 자단 12,000원 / 녹단 12,000원 / 혈단 13,000원 / 스네이크 우드 22,000원 / 핑크 아이보리 44,000원
+        기본: 흑단 18,000원 / 자단 21,000원 / 녹단 21,000원 / 혈단 24,000원 / 스네이크 우드 40,000원 / 핑크 아이보리 80,000원<br />
+        소매 바늘: 흑단 16,000원 / 자단 17,000원 / 녹단 17,000원 / 혈단 17,000원 / 스네이크 우드 30,000원 / 핑크 아이보리 60,000원
       </div>
       <p>세트 수량만큼 각 세트의 나무 길이를 선택해주세요.</p>
       <div id="lengthSets"></div>
@@ -393,6 +537,10 @@
     <section class="card step" data-step="4">
       <h2>3-1. 나무 종류 선택</h2>
       <p>각 세트별로 나무 종류를 선택해주세요.</p>
+      <div class="note">
+        💡 <strong>수강생을 위한 클래스 팁!</strong><br />
+        단단한 나무일수록 다듬는 데 시간과 정성이 더 필요하지만, 그만큼 실이 걸리지 않고 부드럽게 미끄러지는 평생의 도구가 완성됩니다. 내 취향에 맞는 색상과 향기를 먼저 골라보세요!
+      </div>
       <div id="woodSets"></div>
       <div class="step-actions">
         <button type="button" class="secondary prev-btn">이전</button>
@@ -407,7 +555,7 @@
         연결부 수량은 선택한 나무 세트 수량과 같아야 합니다.<br />
         예: 세트가 3개면 연결부도 3개를 입력해주세요.
       </div>
-      <p>바늘과 케이블을 연결할 스테인리스 연결부: 19,000원</p>
+      <p>바늘과 케이블을 연결할 스테인리스 연결부: 23,000원</p>
       <p>스테인리스 소재입니다. 연결부에 3.0~6.0의 바늘 굵기가 0.5단위로 레이저 각인이 되어 있습니다.</p>
       <label for="connectorQty">연결부 개수를 입력해주세요.</label>
       <input id="connectorQty" name="connectorQty" type="number" min="0" step="1" placeholder="예: 1" />
@@ -419,8 +567,8 @@
 
     <section class="card step" data-step="6">
       <h2>5. 케이블 선택</h2>
-      <p>케이블 기본 3개: 18,000원</p>
-      <p>추가 케이블: 6,000원</p>
+      <p>케이블 기본 3개: 20,000원</p>
+      <p>추가 케이블: 7,000원</p>
       <p>스위블 제품이며, 치아오구 케이블처럼 금속와이어에 코팅이 된 형식입니다.</p>
       <p>기본으로 35cm, 55cm, 75cm 3개 길이의 케이블이 제공됩니다.</p>
       <p>추가로 13cm, 17cm, 20cm, 22cm, 28cm, 35cm, 55cm, 75cm, 95cm 길이도 구매 가능합니다.</p>
@@ -458,6 +606,10 @@
       <h2>제출 결과</h2>
       <p id="resultMessage">아직 제출된 내용이 없습니다.</p>
       <div id="resultSummary" class="result-summary"></div>
+      <p class="small">기존 제출을 바꾸려면 아래 버튼을 누르세요.</p>
+      <div class="result-actions">
+        <button type="button" class="edit-btn" id="editCurrentBtn">현재 제출 수정</button>
+      </div>
       <button type="button" class="download-btn" id="downloadBtn">엑셀로 다운로드</button>
       <div class="reset-box">
         <strong>결과 초기화</strong>
@@ -486,10 +638,13 @@
     const adminPasswordInput = document.getElementById('adminPassword');
     const resetBtn = document.getElementById('resetBtn');
     const resetMessage = document.getElementById('resetMessage');
+    const submitBtn = form.querySelector('button[type="submit"]');
     const ADMIN_PASSWORD = 'coca';
     let currentStep = 0;
     let selectedLengths = [];
     let selectedWoodTypes = [];
+    let editingIndex = null;
+    let currentResultIndex = null;
 
     const lengthOptions = [
       { value: 'basic', label: '기본 바늘 세트', note: '11cm 길이, 연결부 2cm 접합 시 13cm' },
@@ -498,12 +653,12 @@
     ];
 
     const woodOptions = [
-      { value: '흑단', label: '흑단', note: '매끈하고 가공이 쉽다.' },
-      { value: '자단', label: '자단', note: '붉은 바탕에 노란색 유성무늬가 있고 가공·무름 정도는 보통이다.' },
-      { value: '녹단', label: '녹단', note: '무르고 가공이 쉽지만 부러지기 쉽고, 자연향과 색 변화가 특징이다.' },
-      { value: '혈단', label: '혈단', note: '붉은 색이 매력적이고 가공·무름 정도는 보통이다.' },
-      { value: '스네이크 우드', label: '스네이크 우드', note: '단단하고 가공이 어렵지만 무늬가 아름답고 광이 잘 난다.' },
-      { value: '핑크 아이보리', label: '핑크 아이보리', note: '입자가 고아 매끈하고 밀도가 높다.' }
+      { value: '흑단', label: '흑단 (Ebony)', note: `<strong>외적 특징</strong>: 옻칠을 한 듯 깊고 진한 검은색이 특징입니다. 나무에 따라 정갈한 순검정부터 짙은 브라운/회색 결이 섞인 패턴을 띱니다.<br /><strong>희소성</strong>: ★★☆☆☆ (고가 특수목 중에서는 비교적 구하기 쉬운 편이나, 연륜이 오래된 정품 에보니는 점차 귀해지고 있습니다.)<br /><strong>강도 및 무름</strong>: 매우 단단함. 조직이 촘촘하고 매우 무거워 물에 가라앉습니다.<br /><strong>대바늘로 만들었을 때</strong><br />• 표면을 연마할수록 과일 껍질처럼 미끄러지듯 단단하고 매끄러운 촉감이 납니다.<br />• 얇은 바늘(2~3mm)로 깎아도 잘 부러지지 않고 형태 유지가 뛰어납니다.<br />• 어두운 색상 덕분에 밝은색 실을 걸어 뜰 때 코가 눈에 아주 잘 띄는 장점이 있습니다.`, image: '나무/나무 종류/흑단/KakaoTalk_Photo_2026-07-17-17-05-51 006.jpeg' },
+      { value: '자단', label: '자단 (Rosewood / 로즈우드)', note: `<strong>외적 특징</strong>: 붉은빛이 도는 갈색부터 짙은 자줏빛이 섞인 바탕에 검은 나뭇결 무늬가 진하게 흐릅니다.<br /><strong>희소성</strong>: ★★★☆☆ (국제적 통제(CITES)를 받는 대표적인 수종으로, 등급이 높은 원목은 희소성이 높습니다.)<br /><strong>강도 및 무름</strong>: 단단함. 흑단에 육박할 정도로 조직이 치밀하고 강도가 높습니다.<br /><strong>대바늘로 만들었을 때</strong><br />• 유분이 적당히 포함되어 있어 손때가 탈수록 은은하고 고풍스러운 윤택이 올라옵니다.<br />• 손에 쥐었을 때 특유의 따뜻하고 차분한 촉감을 주며, 실이 매끄럽게 잘 미끄러집니다.<br />• 클래식하고 고급스러운 고급 대바늘의 대명사로 불립니다.` },
+      { value: '녹단', label: '녹단 (Palo Santo / 파로산토)', note: `<strong>외적 특징</strong>: 깎아낸 직후에는 황록색이나 갈색을 띠지만, 햇빛(UV)을 받으면 점차 짙은 올리브 녹색으로 변하는 신비로운 목재입니다.<br /><strong>희소성</strong>: ★★★☆☆ (남미산 고급 향목으로 멸종위기종 관리 항목에 들어가 있어 수입량이 제한적입니다.)<br /><strong>강도 및 무름</strong>: 매우 단단하고 기름짐. 밀도가 높고 자체 유분(천연 오일)을 대량 함유하고 있습니다.<br /><strong>대바늘로 만들었을 때</strong><br />• 천연 향기: 가공할 때와 완성 후에도 아로마 테라피 같은 특유의 스파이시하고 달콤한 나무 향이 납니다.<br />• 자체 오일 성분 덕분에 별도의 화학 마감을 강하게 하지 않아도 자연스러운 광택이 나며, 실과의 마찰력이 아주 부드럽습니다.<br />• 시간이 지나면서 바늘 색상이 녹색으로 변하는 과정을 보는 즐거움이 있습니다.`, image: '나무/나무 종류/녹단/KakaoTalk_Photo_2026-07-17-17-05-50 001.jpeg' },
+      { value: '혈단', label: '혈단 (Bloodwood)', note: `<strong>외적 특징</strong>: 붉은 피처럼 강렬하고 선명한 크림슨 레드(진홍색)를 띱니다. 변색이 적고 빛깔이 매우 화려합니다.<br /><strong>희소성</strong>: ★★☆☆☆ (특수목 시장에서 구하기 아주 어렵지는 않으나, 색감이 고른 고품질 목재는 희소합니다.)<br /><strong>강도 및 무름</strong>: 매우 단단하고 질김. 결이 단단하여 샌딩 및 칼질 가공 시 손이 많이 갑니다.<br /><strong>대바늘로 만들었을 때</strong><br />• 색감이 화려하여 시각적 만족도가 매우 높습니다. 수강생 만족도가 높은 대표적 수종입니다.<br />• 조직이 짱짱해서 바늘 끝(Tip)을 매우 정교하고 뾰족하게 가공하기에 유리합니다.<br />• 무게감이 적당히 있어 안정적인 뜨개질감을 선사합니다.`, image: '나무/나무 종류/혈단/KakaoTalk_Photo_2026-07-17-17-05-52 010.jpeg' },
+      { value: '스네이크 우드', label: '스네이크 우드 (Snakewood)', note: `<strong>외적 특징</strong>: 붉은갈색 바탕에 뱀껍질을 똑같이 닮은 얼룩덜룩한 검은 패턴이 선명하게 나타납니다.<br /><strong>희소성</strong>: ★★★★★ (세계에서 가장 귀하고 비싼 목재 중 하나입니다. 특유의 뱀 무늬가 선명하게 나온 부분은 극소량입니다.)<br /><strong>강도 및 무름</strong>: 극도로 단단함 (초고밀도). 유리처럼 단단하지만 그만큼 건조 과정이나 가공 시 갈라지기 쉽습니다.<br /><strong>대바늘로 만들었을 때</strong><br />• 압도적인 화려함과 존재감을 자랑합니다.<br />• 표면이 도자기처럼 깨끗하고 반짝이게 마감되며, 마찰 저항이 극도로 적어 실이 부드럽게 넘어갑니다.<br />• 다만 목재 자체가 매우 까다로워 수강생들이 깎을 때 쪼개지지 않도록 정밀한 기술이 필요합니다.`, image: '나무/나무 종류/스네이크우드/KakaoTalk_Photo_2026-07-17-17-05-51 003.jpeg' },
+      { value: '핑크 아이보리', label: '핑크 아이보리 (Pink Ivory)', note: `<strong>외적 특징</strong>: '분홍빛 코끼리 이빨'이라는 이름처럼 상아나 화장품이 연상되는 밝은 핑크색부터 밝은 자줏빛을 띱니다.<br /><strong>희소성</strong>: ★★★★☆ (아프리카 신성한 나무로 불리며, 선명하고 고른 핑크색을 띠는 심재는 수량 확보가 어렵습니다.)<br /><strong>강도 및 무름</strong>: 매우 단단함. 상아(Ivory)라는 이름처럼 단단하고 묵직합니다.<br /><strong>대바늘로 만들었을 때</strong><br />• 희귀한 핑크빛 나무라는 유니크함 덕분에 여성 수강생 및 프리미엄 소장용으로 인기가 극대화되는 수종입니다.<br />• 조직이 부드럽게 치밀하여 깎았을 때 단면이 대단히 고르고 부드럽습니다.<br />• 바늘로 만들었을 때 손에 닿는 느낌이 부드러우면서도 강도가 뛰어나 오랫동안 변형 없이 사용할 수 있습니다.`, image: '나무/나무 종류/핑크아이보리/KakaoTalk_Photo_2026-07-17-17-05-51 007.jpeg' }
     ];
 
     function formatPrice(value) {
@@ -512,20 +667,20 @@
 
     function getSetPrice(lengthValue, woodValue) {
       const basicPrices = {
-        흑단: 14000,
-        자단: 16000,
-        녹단: 16000,
-        혈단: 18000,
-        '스네이크 우드': 30500,
-        '핑크 아이보리': 61000
+        흑단: 18000,
+        자단: 21000,
+        녹단: 21000,
+        혈단: 24000,
+        '스네이크 우드': 40000,
+        '핑크 아이보리': 80000
       };
       const retailPrices = {
-        흑단: 12000,
-        자단: 12000,
-        녹단: 12000,
-        혈단: 13000,
-        '스네이크 우드': 22000,
-        '핑크 아이보리': 44000
+        흑단: 16000,
+        자단: 17000,
+        녹단: 17000,
+        혈단: 17000,
+        '스네이크 우드': 30000,
+        '핑크 아이보리': 60000
       };
 
       const priceMap = lengthValue === 'retail' ? retailPrices : basicPrices;
@@ -542,9 +697,9 @@
       const connectorQty = Number(data.connectorQty || 0);
       const cableBaseQty = Number(data.cableBaseQty || 0);
       const cableExtraQty = Number(data.cableExtraQty || 0);
-      const connectorPrice = connectorQty * 19000;
-      const cableBasePrice = cableBaseQty * 18000;
-      const cableExtraPrice = cableExtraQty * 6000;
+      const connectorPrice = connectorQty * 23000;
+      const cableBasePrice = cableBaseQty * 20000;
+      const cableExtraPrice = cableExtraQty * 7000;
       const totalPrice = (data.sets || []).reduce((sum, set) => sum + (typeof set.setPrice === 'number' ? set.setPrice : getSetPrice(set.lengthValue, set.woodValue)), 0) + connectorPrice + cableBasePrice + cableExtraPrice;
 
       return {
@@ -600,7 +755,9 @@
           <div class="set-options">
             ${woodOptions.map((option) => `
               <button type="button" class="set-option ${selectedWoodTypes[index] === option.value ? 'active' : ''}" data-group="wood" data-index="${index}" data-value="${option.value}">
-                ${option.label}<span>${option.note}</span>
+                ${option.image ? `<img src="${encodeURI(option.image)}" alt="${option.label}" loading="lazy" />` : ''}
+                <span class="set-option-title">${option.label}</span>
+                <span>${option.note}</span>
               </button>
             `).join('')}
           </div>
@@ -614,7 +771,8 @@
       return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
     }
 
-    function renderResult(data) {
+    function renderResult(data, resultIndex = null) {
+      currentResultIndex = resultIndex;
       const setLines = data.sets.map((set, index) => `세트 ${index + 1}: ${set.lengthLabel} / ${set.woodLabel}`).join('<br />');
       const priceSummary = buildPriceSummary(data);
       resultMessage.textContent = `${data.name || '이름 미입력'}님이 제출하신 내용입니다.`;
@@ -640,8 +798,46 @@
           <p>${data.memo || '없음'}</p>
         </div>
       `;
+      const editCurrentBtn = document.getElementById('editCurrentBtn');
+      if (editCurrentBtn) {
+        editCurrentBtn.style.display = 'inline-flex';
+      }
       resultCard.classList.add('active');
-      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function updateSubmitButton() {
+      if (submitBtn) {
+        submitBtn.textContent = editingIndex === null ? '제출' : '수정 완료';
+      }
+    }
+
+    function populateFormFromData(data) {
+      document.getElementById('name').value = data.name || '';
+      setQtyInput.value = data.setQty || 1;
+      document.getElementById('connectorQty').value = data.connectorQty || 0;
+      document.getElementById('cableBaseQty').value = data.cableBaseQty || 0;
+      document.getElementById('cableExtraQty').value = data.cableExtraQty || 0;
+      document.getElementById('cableLength').value = data.cableLength || '';
+      document.querySelector('textarea[name="memo"]').value = data.memo || '';
+      selectedLengths = (data.sets || []).map((set) => set.lengthValue || '');
+      selectedWoodTypes = (data.sets || []).map((set) => set.woodValue || '');
+      renderSetSelectors();
+      showStep(0);
+    }
+
+    function startEdit(index) {
+      const savedResults = JSON.parse(localStorage.getItem('dabaeul-order-results') || '[]');
+      const target = savedResults[index];
+      if (!target) return;
+
+      editingIndex = index;
+      populateFormFromData(target);
+      resultMessage.textContent = '기존 주문을 수정하고 있습니다.';
+      resultCard.classList.add('active');
+      renderResult(target, index);
+      renderHistory(savedResults);
+      updateSubmitButton();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderHistory(results) {
@@ -656,6 +852,9 @@
           <div class="history-item">
             <strong>${index + 1}. ${item.name || '이름 미입력'} · ${formatDate(item.submittedAt)}</strong>
             <p>세트 수량: ${item.setQty}세트<br />${item.sets.map((set, setIndex) => `세트 ${setIndex + 1}: ${set.lengthLabel} / ${set.woodLabel}`).join('<br />')}<br />가격: ${priceSummary.setPriceLines.join('<br />')}<br />연결부: ${item.connectorQty}개 / 케이블: ${item.cableBaseQty}개 기본, ${item.cableExtraQty}개 추가 / 길이: ${item.cableLength || '미입력'}<br /><strong>총 예상 금액: ${formatPrice(priceSummary.totalPrice)}</strong></p>
+            <div class="history-item-actions">
+              <button type="button" class="edit-btn" data-index="${index}">수정</button>
+            </div>
           </div>
         `;
       }).join('');
@@ -673,7 +872,7 @@
       if (!savedResults.length) return [];
 
       const latest = savedResults[savedResults.length - 1];
-      renderResult(latest);
+      renderResult(latest, savedResults.length - 1);
       renderHistory(savedResults);
       return savedResults;
     }
@@ -704,8 +903,8 @@
       const rows = results.map((item) => {
         const setDetails = item.sets.map((set, index) => `세트${index + 1}:${set.lengthLabel}/${set.woodLabel}`).join(' | ');
         const priceDetails = item.sets.map((set, index) => `세트${index + 1}:${formatPrice(typeof set.setPrice === 'number' ? set.setPrice : getSetPrice(set.lengthValue, set.woodValue))}`).join(' | ');
-        const connectorPrice = Number(item.connectorQty || 0) * 19000;
-        const cablePrice = Number(item.cableBaseQty || 0) * 18000 + Number(item.cableExtraQty || 0) * 6000;
+        const connectorPrice = Number(item.connectorQty || 0) * 23000;
+        const cablePrice = Number(item.cableBaseQty || 0) * 20000 + Number(item.cableExtraQty || 0) * 7000;
         const totalPrice = (item.sets || []).reduce((sum, set) => sum + (typeof set.setPrice === 'number' ? set.setPrice : getSetPrice(set.lengthValue, set.woodValue)), 0) + connectorPrice + cablePrice;
         return [
           item.name || '미입력',
@@ -771,9 +970,27 @@
         submittedAt: new Date().toISOString()
       };
 
+      const savedResults = JSON.parse(localStorage.getItem('dabaeul-order-results') || '[]');
+
+      if (editingIndex !== null && savedResults[editingIndex]) {
+        const savedIndex = editingIndex;
+        savedResults[editingIndex] = data;
+        localStorage.setItem('dabaeul-order-results', JSON.stringify(savedResults));
+        renderResult(data, savedIndex);
+        renderHistory(savedResults);
+        editingIndex = null;
+        updateSubmitButton();
+        resultMessage.textContent = '주문이 수정되었습니다.';
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
       const results = saveResult(data);
-      renderResult(data);
+      renderResult(data, results.length - 1);
       renderHistory(results);
+      editingIndex = null;
+      updateSubmitButton();
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     document.querySelectorAll('.next-btn').forEach((btn) => {
@@ -831,9 +1048,22 @@
     resetBtn.addEventListener('click', resetResults);
     downloadBtn.addEventListener('click', downloadExcel);
 
+    document.getElementById('editCurrentBtn').addEventListener('click', () => {
+      if (currentResultIndex !== null) {
+        startEdit(currentResultIndex);
+      }
+    });
+
+    historyList.addEventListener('click', (event) => {
+      const editButton = event.target.closest('.edit-btn');
+      if (!editButton) return;
+      startEdit(Number(editButton.dataset.index));
+    });
+
     setQtyInput.addEventListener('input', renderSetSelectors);
     setQtyInput.addEventListener('change', renderSetSelectors);
     renderSetSelectors();
+    updateSubmitButton();
     loadSavedResult();
     showStep(0);
   </script>
