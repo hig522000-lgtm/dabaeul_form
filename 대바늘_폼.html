@@ -739,7 +739,7 @@
           <li><strong>배송비</strong>: 2,000원이 별도로 추가됩니다. 제출하시면 결과 화면에서 배송비가 포함된 최종 입금 금액을 바로 확인하실 수 있어요.</li>
           <li><strong>입금 계좌</strong>: 신한 110-505-613943 (예금주: 김민주)</li>
           <li><strong>입금자명</strong>: 1번 기본 정보에 적어주신 이름(닉네임)으로 입금해 주셔야 확인이 수월합니다. 꼭 확인 부탁드려요!</li>
-          <li><strong>관부가세</strong>: 통관 과정에서 별도로 부과될 수 있으며, 대략 2,000원~4,000원 정도로 예상됩니다. 정확한 금액은 확인되는 대로 카카오톡 단체방에서 다시 안내드릴게요.</li>
+          <li><strong>관부가세</strong>: 각자 주문하신 금액에 따라 <strong>8~10%</strong> 정도가 별도로 부과됩니다. 자세한 내용은 카카오톡 단체방에서 다시 설명드릴게요.</li>
         </ul>
         <p class="small">항상 참여해 주셔서 감사합니다!</p>
       </div>
@@ -787,6 +787,36 @@
     const resetMessage = document.getElementById('resetMessage');
     const submitBtn = form.querySelector('button[type="submit"]');
     const ADMIN_PASSWORD = 'coca';
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzH9veTXqS3PW-D6_tcy7bv_EV1Abqd0XJ1d0E28J5Q-odD63OppAwzWw42-BPGtjGlWA/exec';
+
+    function sendToGoogleSheet(data, priceSummary) {
+      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('여기에')) return;
+      const setDetails = data.sets.map((set, index) => `세트${index + 1}:${set.lengthLabel}/${set.woodLabel}`).join(' | ');
+      const priceDetails = data.sets.map((set, index) => `세트${index + 1}:${formatPrice(set.setPrice)}`).join(' | ');
+      const payload = {
+        submittedAt: data.submittedAt,
+        name: data.name,
+        setQty: data.setQty,
+        setDetails,
+        priceDetails,
+        connectorQty: data.connectorQty,
+        connectorPrice: priceSummary.connectorPrice,
+        cableBaseQty: data.cableBaseQty,
+        cableExtraQty: data.cableExtraQty,
+        cablePrice: priceSummary.cableBasePrice + priceSummary.cableExtraPrice,
+        cableLength: data.cableLength,
+        subtotal: priceSummary.subtotal,
+        shippingFee: priceSummary.shippingFee,
+        totalPrice: priceSummary.totalPrice,
+        account: '신한 110-505-613943 (김민주)',
+        memo: data.memo
+      };
+      fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
     let currentStep = 0;
     let selectedLengths = [];
     let selectedWoodTypes = [];
@@ -950,7 +980,7 @@
             <li><strong>입금 계좌</strong>: 신한 110-505-613943 (예금주: 김민주)</li>
             <li><strong>입금 금액</strong>: 위 총 입금 금액(배송비 2,000원 포함)</li>
             <li><strong>입금자명</strong>: 1번에 기입하신 이름(닉네임)으로 입금해주세요.</li>
-            <li><strong>관부가세</strong>: 통관 시 별도 부과될 수 있으며 대략 2,000원~4,000원 수준입니다. 정확한 금액은 카카오톡 단체방에서 추후 공지됩니다.</li>
+            <li><strong>관부가세</strong>: 각자 주문하신 금액에 따라 8~10% 정도가 별도로 부과됩니다. 자세한 내용은 카카오톡 단체방에서 설명드릴게요.</li>
           </ul>
         </div>
         <div class="result-row">
@@ -1139,6 +1169,7 @@
         localStorage.setItem('dabaeul-order-results', JSON.stringify(savedResults));
         renderResult(data, savedIndex);
         renderHistory(savedResults);
+        sendToGoogleSheet(data, buildPriceSummary(data));
         editingIndex = null;
         updateSubmitButton();
         resultMessage.textContent = '주문이 수정되었습니다.';
@@ -1149,6 +1180,7 @@
       const results = saveResult(data);
       renderResult(data, results.length - 1);
       renderHistory(results);
+      sendToGoogleSheet(data, buildPriceSummary(data));
       editingIndex = null;
       updateSubmitButton();
       resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
