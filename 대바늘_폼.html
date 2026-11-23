@@ -637,9 +637,9 @@
       <h2>3. 나무 길이 선택</h2>
       <div class="note">
         <strong>안내</strong><br />
-        기본: 11cm 길이, 연결부(2cm)를 접합하면 13cm 바늘이 됩니다.<br />
+        기본: 11cm 길이, 연결부(2.5cm)를 접합하면 13.5cm 바늘이 됩니다.<br />
         숏팁: 기본 바늘에서 원하는 길이만큼 재단되어옵니다. 목재 종류 및 가격은 동일합니다.<br />
-        소매 바늘: 8cm+6cm 조합, 연결부(2cm)를 접합하면 10cm+8cm 바늘이 됩니다.
+        소매 바늘: 8cm+6cm 조합, 연결부(2.5cm)를 접합하면 10.5cm+8.5cm 바늘이 됩니다.
       </div>
       <div class="note">
         <strong>가격 안내</strong><br />
@@ -696,7 +696,7 @@
       <p>추가 케이블: 7,000원</p>
       <p>스위블 제품이며, 치아오구 케이블처럼 금속와이어에 코팅이 된 형식입니다.</p>
       <p>기본으로 35cm, 55cm, 75cm 3개 길이의 케이블이 제공됩니다.</p>
-      <p>추가로 13cm, 17cm, 20cm, 22cm, 28cm, 35cm, 55cm, 75cm, 95cm 길이도 구매 가능합니다.</p>
+      <p>추가로 13cm, 17cm, 22cm, 28cm, 35cm, 55cm, 75cm, 95cm 길이도 구매 가능합니다. (20cm는 현재 품절로 주문이 불가합니다)</p>
       <div class="grid">
         <div class="option">
           <strong>기본 3개 세트</strong>
@@ -791,14 +791,15 @@
 
     function sendToGoogleSheet(data, priceSummary) {
       if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('여기에')) return;
-      const setDetails = data.sets.map((set, index) => `세트${index + 1}:${set.lengthLabel}/${set.woodLabel}`).join(' | ');
-      const priceDetails = data.sets.map((set, index) => `세트${index + 1}:${formatPrice(set.setPrice)}`).join(' | ');
       const payload = {
         submittedAt: data.submittedAt,
         name: data.name,
         setQty: data.setQty,
-        setDetails,
-        priceDetails,
+        sets: data.sets.map((set) => ({
+          length: set.lengthLabel,
+          wood: set.woodLabel,
+          price: set.setPrice
+        })),
         connectorQty: data.connectorQty,
         connectorPrice: priceSummary.connectorPrice,
         cableBaseQty: data.cableBaseQty,
@@ -808,7 +809,6 @@
         subtotal: priceSummary.subtotal,
         shippingFee: priceSummary.shippingFee,
         totalPrice: priceSummary.totalPrice,
-        account: '카카오뱅크 3333338804835 (닉트)',
         memo: data.memo
       };
       fetch(GOOGLE_SHEET_URL, {
@@ -824,9 +824,9 @@
     let currentResultIndex = null;
 
     const lengthOptions = [
-      { value: 'basic', label: '기본 바늘 세트', note: '11cm 길이, 연결부 2cm 접합 시 13cm' },
+      { value: 'basic', label: '기본 바늘 세트', note: '11cm 길이, 연결부 2.5cm 접합 시 13.5cm' },
       { value: 'shorttip', label: '숏팁 바늘 세트', note: '원하는 길이만큼 재단' },
-      { value: 'retail', label: '소매 바늘 세트', note: '8cm+6cm 조합, 접합 시 10cm+8cm' }
+      { value: 'retail', label: '소매 바늘 세트', note: '8cm+6cm 조합, 접합 시 10.5cm+8.5cm' }
     ];
 
     const woodOptions = [
