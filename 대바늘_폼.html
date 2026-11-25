@@ -291,6 +291,12 @@
       background: #8d6a47;
     }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
     .step-actions button {
       flex: 1;
       max-width: 140px;
@@ -998,6 +1004,7 @@
     function updateSubmitButton() {
       if (submitBtn) {
         submitBtn.textContent = editingIndex === null ? '제출' : '수정 완료';
+        submitBtn.disabled = false;
       }
     }
 
@@ -1131,6 +1138,12 @@
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+
+      if (submitBtn && submitBtn.disabled) return;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '제출 중...';
+      }
 
       const setQty = Math.max(1, parseInt(setQtyInput.value, 10) || 1);
       const sets = Array.from({ length: setQty }, (_, index) => {
